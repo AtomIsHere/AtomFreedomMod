@@ -1,5 +1,5 @@
-name: TotalFreedomMod
-main: me.totalfreedom.totalfreedommod.TotalFreedomMod
+name: AtomFreedomMod
+main: com.github.atomishere.AtomFreedomMod
 version: ${tfm.build.version}
 description: Plugin for the Total Freedom server.
 depend: [Aero, WorldEdit]
