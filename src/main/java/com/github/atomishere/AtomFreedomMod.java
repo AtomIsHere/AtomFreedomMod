@@ -1,39 +1,62 @@
-package me.totalfreedom.totalfreedommod;
+package com.github.atomishere;
 
-import me.totalfreedom.totalfreedommod.fun.Trailer;
+import com.github.atomishere.admin.AdminList;
+import com.github.atomishere.banning.BanManager;
+import com.github.atomishere.banning.PermbanList;
+import com.github.atomishere.blocking.*;
+import com.github.atomishere.blocking.command.CommandBlocker;
+import com.github.atomishere.bridge.BukkitTelnetBridge;
+import com.github.atomishere.bridge.EssentialsBridge;
+import com.github.atomishere.bridge.LibsDisguisesBridge;
+import com.github.atomishere.bridge.WorldEditBridge;
+import com.github.atomishere.caging.Cager;
+import com.github.atomishere.command.CommandLoader;
+import com.github.atomishere.config.MainConfig;
+import com.github.atomishere.discord.DiscordManager;
+import com.github.atomishere.freeze.Freezer;
+import com.github.atomishere.fun.*;
+import com.github.atomishere.httpd.HTTPDaemon;
+import com.github.atomishere.player.PlayerList;
+import com.github.atomishere.rank.RankManager;
+import com.github.atomishere.rollback.RollbackManager;
+import com.github.atomishere.util.FLog;
+import com.github.atomishere.util.FUtil;
+import com.github.atomishere.util.MethodTimer;
+import com.github.atomishere.world.WorldManager;
+import com.github.atomishere.fun.Trailer;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import me.totalfreedom.totalfreedommod.admin.AdminList;
-import me.totalfreedom.totalfreedommod.banning.BanManager;
-import me.totalfreedom.totalfreedommod.banning.PermbanList;
-import me.totalfreedom.totalfreedommod.blocking.BlockBlocker;
-import me.totalfreedom.totalfreedommod.blocking.EventBlocker;
-import me.totalfreedom.totalfreedommod.blocking.InteractBlocker;
-import me.totalfreedom.totalfreedommod.blocking.MobBlocker;
-import me.totalfreedom.totalfreedommod.blocking.PotionBlocker;
-import me.totalfreedom.totalfreedommod.blocking.command.CommandBlocker;
-import me.totalfreedom.totalfreedommod.bridge.BukkitTelnetBridge;
-import me.totalfreedom.totalfreedommod.bridge.EssentialsBridge;
-import me.totalfreedom.totalfreedommod.bridge.LibsDisguisesBridge;
-import me.totalfreedom.totalfreedommod.bridge.WorldEditBridge;
-import me.totalfreedom.totalfreedommod.caging.Cager;
-import me.totalfreedom.totalfreedommod.command.CommandLoader;
-import me.totalfreedom.totalfreedommod.config.MainConfig;
-import me.totalfreedom.totalfreedommod.freeze.Freezer;
-import me.totalfreedom.totalfreedommod.fun.ItemFun;
-import me.totalfreedom.totalfreedommod.fun.Jumppads;
-import me.totalfreedom.totalfreedommod.fun.Landminer;
-import me.totalfreedom.totalfreedommod.fun.MP44;
-import me.totalfreedom.totalfreedommod.httpd.HTTPDaemon;
-import me.totalfreedom.totalfreedommod.player.PlayerList;
-import me.totalfreedom.totalfreedommod.rank.RankManager;
-import me.totalfreedom.totalfreedommod.rollback.RollbackManager;
-import me.totalfreedom.totalfreedommod.util.FLog;
-import me.totalfreedom.totalfreedommod.util.FUtil;
-import me.totalfreedom.totalfreedommod.util.MethodTimer;
-import me.totalfreedom.totalfreedommod.world.WorldManager;
+import com.github.atomishere.admin.AdminList;
+import com.github.atomishere.banning.BanManager;
+import com.github.atomishere.banning.PermbanList;
+import com.github.atomishere.blocking.BlockBlocker;
+import com.github.atomishere.blocking.EventBlocker;
+import com.github.atomishere.blocking.InteractBlocker;
+import com.github.atomishere.blocking.MobBlocker;
+import com.github.atomishere.blocking.PotionBlocker;
+import com.github.atomishere.blocking.command.CommandBlocker;
+import com.github.atomishere.bridge.BukkitTelnetBridge;
+import com.github.atomishere.bridge.EssentialsBridge;
+import com.github.atomishere.bridge.LibsDisguisesBridge;
+import com.github.atomishere.bridge.WorldEditBridge;
+import com.github.atomishere.caging.Cager;
+import com.github.atomishere.command.CommandLoader;
+import com.github.atomishere.config.MainConfig;
+import com.github.atomishere.freeze.Freezer;
+import com.github.atomishere.fun.ItemFun;
+import com.github.atomishere.fun.Jumppads;
+import com.github.atomishere.fun.Landminer;
+import com.github.atomishere.fun.MP44;
+import com.github.atomishere.httpd.HTTPDaemon;
+import com.github.atomishere.player.PlayerList;
+import com.github.atomishere.rank.RankManager;
+import com.github.atomishere.rollback.RollbackManager;
+import com.github.atomishere.util.FLog;
+import com.github.atomishere.util.FUtil;
+import com.github.atomishere.util.MethodTimer;
+import com.github.atomishere.world.WorldManager;
 import net.pravian.aero.component.service.ServiceManager;
 import net.pravian.aero.plugin.AeroPlugin;
 import org.bukkit.Bukkit;
@@ -41,7 +64,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.mcstats.Metrics;
 
-public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
+public class AtomFreedomMod extends AeroPlugin<AtomFreedomMod>
 {
 
     public static final String CONFIG_FILENAME = "config.yml";
@@ -54,7 +77,7 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
     public MainConfig config;
     //
     // Services
-    public ServiceManager<TotalFreedomMod> services;
+    public ServiceManager<AtomFreedomMod> services;
     public ServerInterface si;
     public SavedFlags sf;
     public WorldManager wm;
@@ -96,10 +119,11 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
     public MP44 mp;
     public Jumppads jp;
     public Trailer tr;
+    public DiscordManager dm;
     public HTTPDaemon hd;
     //
     // Bridges
-    public ServiceManager<TotalFreedomMod> bridges;
+    public ServiceManager<AtomFreedomMod> bridges;
     public BukkitTelnetBridge btb;
     public EssentialsBridge esb;
     public LibsDisguisesBridge ldb;
@@ -108,8 +132,8 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
     @Override
     public void load()
     {
-        TotalFreedomMod.pluginName = plugin.getDescription().getName();
-        TotalFreedomMod.pluginVersion = plugin.getDescription().getVersion();
+        AtomFreedomMod.pluginName = plugin.getDescription().getName();
+        AtomFreedomMod.pluginVersion = plugin.getDescription().getVersion();
 
         FLog.setPluginLogger(plugin.getLogger());
         FLog.setServerLogger(server.getLogger());
@@ -138,7 +162,7 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
         new ConfigConverter(plugin).convert();
 
         BackupManager backups = new BackupManager(this);
-        backups.createBackups(TotalFreedomMod.CONFIG_FILENAME, true);
+        backups.createBackups(AtomFreedomMod.CONFIG_FILENAME, true);
         backups.createBackups(AdminList.CONFIG_FILENAME);
         backups.createBackups(PermbanList.CONFIG_FILENAME);
 
@@ -194,6 +218,9 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
         mp = services.registerService(MP44.class);
         jp = services.registerService(Jumppads.class);
         tr = services.registerService(Trailer.class);
+
+        // Discord
+        dm = services.registerService(DiscordManager.class);
 
         // HTTPD
         hd = services.registerService(HTTPDaemon.class);
@@ -254,7 +281,7 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
         public String date;
         public String head;
 
-        public void load(TotalFreedomMod plugin)
+        public void load(AtomFreedomMod plugin)
         {
             try
             {
@@ -294,13 +321,13 @@ public class TotalFreedomMod extends AeroPlugin<TotalFreedomMod>
         }
     }
 
-    public static TotalFreedomMod plugin()
+    public static AtomFreedomMod plugin()
     {
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins())
         {
             if (plugin.getName().equalsIgnoreCase(pluginName))
             {
-                return (TotalFreedomMod) plugin;
+                return (AtomFreedomMod) plugin;
             }
         }
         return null;
