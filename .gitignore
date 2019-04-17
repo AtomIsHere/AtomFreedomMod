@@ -33,3 +33,5 @@ manifest.mf
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+/debugserver

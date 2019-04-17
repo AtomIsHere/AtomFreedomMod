@@ -2,6 +2,7 @@ package com.github.atomishere.discord.accountlinker;
 
 import com.github.atomishere.AtomFreedomMod;
 import com.github.atomishere.util.FLog;
+import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import java.util.*;
 public class AccountManager {
     private final ConfigurationSection accountSection;
 
+    @Getter
     private final List<AccountContainer> accounts = new ArrayList<>();
     private final Map<Integer, AccountContainer> linkCodes = new HashMap<>();
 
