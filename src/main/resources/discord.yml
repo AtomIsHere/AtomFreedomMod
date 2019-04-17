@@ -1,1 +1,6 @@
 secret_token: aa #Secret Key Here.
+channels:
+  guildid: 562889580999868416
+  statusid: 565430354077417472
+  chatid: 565687695293284362
+  consoleid: 567837945218990086
