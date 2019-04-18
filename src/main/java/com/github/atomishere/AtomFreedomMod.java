@@ -101,6 +101,7 @@ public class AtomFreedomMod extends AeroPlugin<AtomFreedomMod>
     public PermbanList pm;
     public ProtectArea pa;
     public GameRuleHandler gr;
+    public CoinManager cn;
     public RollbackManager rb;
     public CommandSpy cs;
     public Cager ca;
@@ -195,6 +196,7 @@ public class AtomFreedomMod extends AeroPlugin<AtomFreedomMod>
         pm = services.registerService(PermbanList.class);
         pa = services.registerService(ProtectArea.class);
         gr = services.registerService(GameRuleHandler.class);
+        cn = services.registerService(CoinManager.class);
 
         // Single admin utils
         rb = services.registerService(RollbackManager.class);
