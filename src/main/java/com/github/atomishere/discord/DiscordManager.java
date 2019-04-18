@@ -99,7 +99,6 @@ public class DiscordManager extends FreedomService {
             consoleManager.clearSenders();
             consoleManager = null;
 
-            channelManager.sendStatus(false);
             channelManager.unload();
             channelManager = null;
         }
